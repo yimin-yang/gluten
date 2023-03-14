@@ -53,6 +53,8 @@ class VeloxSplitter::PartitionWriter {
       ARROW_ASSIGN_OR_RAISE(spilled_file_, CreateTempShuffleFile(splitter_->NextSpilledFileDir()));
       ARROW_ASSIGN_OR_RAISE(spilled_file_os_, arrow::io::FileOutputStream::Open(spilled_file_, true));
       spilled_file_opened_ = true;
+
+      std::cout << "spilled_file_=" << spilled_file_ << std::endl;
     }
     return arrow::Status::OK();
   }

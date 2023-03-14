@@ -33,6 +33,11 @@
 #include "memory/ColumnarBatch.h"
 #include "operators/shuffle/splitter.h"
 #include "utils/macros.h"
+#include "../velox/shuffle/VeloxSplitter.h"
+#include "memory/VeloxColumnarBatch.h"
+#include "velox/vector/arrow/Bridge.h"
+#include "arrow/Bridge.h"
+#include "ComplexVector.h"
 
 void print_trace(void) {
   char** strings;
@@ -61,6 +66,14 @@ std::shared_ptr<ColumnarBatch> RecordBatchToColumnarBatch(std::shared_ptr<arrow:
   std::unique_ptr<ArrowArray> cArray = std::make_unique<ArrowArray>();
   GLUTEN_THROW_NOT_OK(arrow::ExportRecordBatch(*rb, cArray.get(), cSchema.get()));
   return std::make_shared<ArrowCStructColumnarBatch>(std::move(cSchema), std::move(cArray));
+}
+
+std::shared_ptr<ColumnarBatch> RecordBatch2VeloxColumnarBatch(std::shared_ptr<arrow::RecordBatch> rb) {
+  std::unique_ptr<ArrowSchema> cSchema = std::make_unique<ArrowSchema>();
+  std::unique_ptr<ArrowArray> cArray = std::make_unique<ArrowArray>();
+  GLUTEN_THROW_NOT_OK(arrow::ExportRecordBatch(*rb, cArray.get(), cSchema.get()));
+  auto vp = facebook::velox::importFromArrowAsOwner(*cSchema, *cArray, gluten::GetDefaultWrappedVeloxMemoryPool());
+  return std::make_shared<VeloxColumnarBatch>(std::dynamic_pointer_cast<facebook::velox::RowVector>(vp));
 }
 
 #define ALIGNMENT 2 * 1024 * 1024
@@ -218,6 +231,9 @@ class BenchmarkShuffleSplit {
     for (int i = 0; i < num_columns; ++i) {
       column_indices.push_back(i);
     }
+
+    std::cout << "num_rowgroups=" << num_rowgroups << std::endl;
+    std::cout << "num_columns=" << num_columns << std::endl;
   }
 
   void operator()(benchmark::State& state) {
@@ -438,12 +454,194 @@ class BenchmarkShuffleSplit_IterateScan_Benchmark : public BenchmarkShuffleSplit
       while (record_batch) {
         num_batches += 1;
         num_rows += record_batch->num_rows();
-        TIME_NANO_OR_THROW(split_time, splitter->Split(RecordBatchToColumnarBatch(record_batch).get()));
+        TIME_NANO_OR_THROW(split_time, splitter->Split(RecordBatch2VeloxColumnarBatch(record_batch).get()));
         TIME_NANO_OR_THROW(elapse_read, record_batch_reader->ReadNext(&record_batch));
       }
     }
     TIME_NANO_OR_THROW(split_time, splitter->Stop());
   }
+};
+
+class BenchmarkVeloxSplit {
+public:
+    BenchmarkVeloxSplit(std::string file_name) {
+      GetRecordBatchReader(file_name);
+    }
+
+    void GetRecordBatchReader(const std::string& input_file) {
+      std::unique_ptr<::parquet::arrow::FileReader> parquet_reader;
+      std::shared_ptr<RecordBatchReader> record_batch_reader;
+
+      std::shared_ptr<arrow::fs::FileSystem> fs;
+      std::string file_name;
+      GLUTEN_ASSIGN_OR_THROW(fs, arrow::fs::FileSystemFromUriOrPath(input_file, &file_name))
+
+      GLUTEN_ASSIGN_OR_THROW(file, fs->OpenInputFile(file_name));
+
+      properties.set_batch_size(batch_buffer_size);
+      properties.set_pre_buffer(false);
+      properties.set_use_threads(false);
+
+      GLUTEN_THROW_NOT_OK(::parquet::arrow::FileReader::Make(
+              arrow::default_memory_pool(), ::parquet::ParquetFileReader::Open(file), properties, &parquet_reader));
+
+      GLUTEN_THROW_NOT_OK(parquet_reader->GetSchema(&schema));
+
+      auto num_rowgroups = parquet_reader->num_row_groups();
+
+      for (int i = 0; i < num_rowgroups; ++i) {
+        row_group_indices.push_back(i);
+      }
+
+      auto num_columns = schema->num_fields();
+      for (int i = 0; i < num_columns; ++i) {
+        column_indices.push_back(i);
+      }
+
+      std::cout << "num_rowgroups=" << num_rowgroups << std::endl;
+      std::cout << "num_columns=" << num_columns << std::endl;
+    }
+
+    void operator()(benchmark::State& state) {
+      // SetCPU(state.thread_index());
+      arrow::Compression::type compression_type = (arrow::Compression::type)state.range(1);
+
+      std::shared_ptr<arrow::MemoryPool> pool = std::make_shared<LargePageMemoryPool>();
+
+      const int num_partitions = state.range(0);
+
+      auto options = SplitOptions::Defaults();
+      options.compression_type = compression_type;
+      options.buffer_size = split_buffer_size;
+      options.buffered_write = true;
+      options.offheap_per_task = 128 * 1024 * 1024 * 1024L;
+      options.prefer_spill = true;
+      options.write_schema = false;
+      options.memory_pool = pool;
+
+      std::shared_ptr<VeloxSplitter> splitter;
+      int64_t elapse_read = 0;
+      int64_t num_batches = 0;
+      int64_t num_rows = 0;
+      int64_t split_time = 0;
+      auto start_time = std::chrono::steady_clock::now();
+
+      Do_Split(splitter, elapse_read, num_batches, num_rows, split_time, num_partitions, options, state);
+      auto end_time = std::chrono::steady_clock::now();
+      auto total_time = (end_time - start_time).count();
+
+      auto fs = std::make_shared<arrow::fs::LocalFileSystem>();
+      GLUTEN_THROW_NOT_OK(fs->DeleteFile(splitter->DataFile()));
+
+      state.SetBytesProcessed(int64_t(splitter->RawPartitionBytes()));
+
+      state.counters["rowgroups"] = benchmark::Counter(
+              row_group_indices.size(), benchmark::Counter::kAvgThreads, benchmark::Counter::OneK::kIs1000);
+      state.counters["columns"] =
+              benchmark::Counter(column_indices.size(), benchmark::Counter::kAvgThreads, benchmark::Counter::OneK::kIs1000);
+      state.counters["batches"] =
+              benchmark::Counter(num_batches, benchmark::Counter::kAvgThreads, benchmark::Counter::OneK::kIs1000);
+      state.counters["num_rows"] =
+              benchmark::Counter(num_rows, benchmark::Counter::kAvgThreads, benchmark::Counter::OneK::kIs1000);
+      state.counters["num_partitions"] =
+              benchmark::Counter(num_partitions, benchmark::Counter::kAvgThreads, benchmark::Counter::OneK::kIs1000);
+      state.counters["batch_buffer_size"] =
+              benchmark::Counter(batch_buffer_size, benchmark::Counter::kAvgThreads, benchmark::Counter::OneK::kIs1024);
+      state.counters["split_buffer_size"] =
+              benchmark::Counter(split_buffer_size, benchmark::Counter::kAvgThreads, benchmark::Counter::OneK::kIs1024);
+
+      state.counters["bytes_spilled"] = benchmark::Counter(
+              splitter->TotalBytesSpilled(), benchmark::Counter::kAvgThreads, benchmark::Counter::OneK::kIs1024);
+      state.counters["bytes_written"] = benchmark::Counter(
+              splitter->TotalBytesWritten(), benchmark::Counter::kAvgThreads, benchmark::Counter::OneK::kIs1024);
+      state.counters["bytes_raw"] = benchmark::Counter(
+              splitter->RawPartitionBytes(), benchmark::Counter::kAvgThreads, benchmark::Counter::OneK::kIs1024);
+      state.counters["bytes_spilled"] = benchmark::Counter(
+              splitter->TotalBytesSpilled(), benchmark::Counter::kAvgThreads, benchmark::Counter::OneK::kIs1024);
+
+      state.counters["parquet_parse"] =
+              benchmark::Counter(elapse_read, benchmark::Counter::kAvgThreads, benchmark::Counter::OneK::kIs1000);
+      state.counters["write_time"] = benchmark::Counter(
+              splitter->TotalWriteTime(), benchmark::Counter::kAvgThreads, benchmark::Counter::OneK::kIs1000);
+      state.counters["spill_time"] = benchmark::Counter(
+              splitter->TotalSpillTime(), benchmark::Counter::kAvgThreads, benchmark::Counter::OneK::kIs1000);
+      state.counters["compress_time"] = benchmark::Counter(
+              splitter->TotalCompressTime(), benchmark::Counter::kAvgThreads, benchmark::Counter::OneK::kIs1000);
+
+      split_time = split_time - splitter->TotalSpillTime() - splitter->TotalCompressTime() - splitter->TotalWriteTime();
+
+      state.counters["split_time"] =
+              benchmark::Counter(split_time, benchmark::Counter::kAvgThreads, benchmark::Counter::OneK::kIs1000);
+
+      state.counters["total_time"] =
+              benchmark::Counter(total_time, benchmark::Counter::kAvgThreads, benchmark::Counter::OneK::kIs1000);
+      splitter.reset();
+    }
+
+protected:
+    long SetCPU(uint32_t cpuindex) {
+      cpu_set_t cs;
+      CPU_ZERO(&cs);
+      CPU_SET(cpuindex, &cs);
+      return sched_setaffinity(0, sizeof(cs), &cs);
+    }
+
+    virtual void Do_Split(
+            std::shared_ptr<VeloxSplitter>& splitter,
+            int64_t& elapse_read,
+            int64_t& num_batches,
+            int64_t& num_rows,
+            int64_t& split_time,
+            const int num_partitions,
+            SplitOptions options,
+            benchmark::State& state) {}
+
+protected:
+    std::string file_name;
+    std::shared_ptr<arrow::io::RandomAccessFile> file;
+    std::vector<int> row_group_indices;
+    std::vector<int> column_indices;
+    std::shared_ptr<arrow::Schema> schema;
+    parquet::ArrowReaderProperties properties;
+};
+
+class BenchmarkVeloxSplit_IterateScan_Benchmark : public BenchmarkVeloxSplit {
+public:
+    BenchmarkVeloxSplit_IterateScan_Benchmark(std::string filename) : BenchmarkVeloxSplit(filename) {}
+
+protected:
+    void Do_Split(
+            std::shared_ptr<VeloxSplitter>& splitter,
+            int64_t& elapse_read,
+            int64_t& num_batches,
+            int64_t& num_rows,
+            int64_t& split_time,
+            const int num_partitions,
+            SplitOptions options,
+            benchmark::State& state) {
+      if (state.thread_index() == 0)
+        std::cout << schema->ToString() << std::endl;
+      GLUTEN_ASSIGN_OR_THROW(splitter, VeloxSplitter::Make("rr", num_partitions, std::move(options)));
+      std::shared_ptr<arrow::RecordBatch> record_batch;
+      std::unique_ptr<::parquet::arrow::FileReader> parquet_reader;
+      std::shared_ptr<RecordBatchReader> record_batch_reader;
+      GLUTEN_THROW_NOT_OK(::parquet::arrow::FileReader::Make(
+              arrow::default_memory_pool(), ::parquet::ParquetFileReader::Open(file), properties, &parquet_reader));
+
+      for (auto _ : state) {
+        std::vector<std::shared_ptr<arrow::RecordBatch>> batches;
+        GLUTEN_THROW_NOT_OK(
+                parquet_reader->GetRecordBatchReader(row_group_indices, column_indices, &record_batch_reader));
+        TIME_NANO_OR_THROW(elapse_read, record_batch_reader->ReadNext(&record_batch));
+        while (record_batch) {
+          num_batches += 1;
+          num_rows += record_batch->num_rows();
+          TIME_NANO_OR_THROW(split_time, splitter->Split(RecordBatch2VeloxColumnarBatch(record_batch).get()));
+          TIME_NANO_OR_THROW(elapse_read, record_batch_reader->ReadNext(&record_batch));
+        }
+      }
+      TIME_NANO_OR_THROW(split_time, splitter->Stop());
+    }
 };
 
 } // namespace gluten
@@ -499,6 +697,18 @@ int main(int argc, char** argv) {
       ->ReportAggregatesOnly(false)
       ->MeasureProcessCPUTime()
       ->Unit(benchmark::kSecond);
+
+  gluten::BenchmarkVeloxSplit_IterateScan_Benchmark bck2(datafile);
+  benchmark::RegisterBenchmark("BenchmarkVeloxSplit::IterateScan", bck2)
+          ->Iterations(iterations)
+          ->Args({
+                         partitions,
+                         compression_codec,
+                 })
+          ->Threads(threads)
+          ->ReportAggregatesOnly(false)
+          ->MeasureProcessCPUTime()
+          ->Unit(benchmark::kSecond);
 
   benchmark::Initialize(&argc, argv);
   benchmark::RunSpecifiedBenchmarks();
