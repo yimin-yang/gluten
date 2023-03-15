@@ -15,12 +15,15 @@
 # specific language governing permissions and limitations
 # under the License.
 
+find_package(gflags REQUIRED COMPONENTS shared CONFIG)
+
 macro(package_add_gbenchmark TESTNAME)
   add_executable(${TESTNAME} ${ARGN})
-  target_link_libraries(${TESTNAME} benchmark::benchmark gluten ${CMAKE_THREAD_LIBS_INIT})
-  target_include_directories(${TESTNAME} PUBLIC ${source_root_directory})
+  target_link_libraries(${TESTNAME} benchmark::benchmark gluten ${CMAKE_THREAD_LIBS_INIT} gflags_shared Arrow::parquet velox protobuf)
+  target_include_directories(${TESTNAME} PUBLIC ${source_root_directory} PRIVATE ${CMAKE_SOURCE_DIR}/velox ${CMAKE_SOURCE_DIR}/src)
   set_target_properties(${TESTNAME} PROPERTIES FOLDER tests)
 endmacro()
 
 package_add_gbenchmark(BenchmarkShuffleSplit ShuffleSplitBenchmark.cc)
 package_add_gbenchmark(BenchmarkCompression CompressionBenchmark.cc)
+package_add_gbenchmark(SplitterVersusVeloxSplitter SplitterVersusVeloxSplitter.cc)
