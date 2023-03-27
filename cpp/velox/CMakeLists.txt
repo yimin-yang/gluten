@@ -172,7 +172,7 @@ set(VELOX_SRCS
     compute/VeloxBridge.cc
     memory/VeloxMemoryPool.cc
     memory/VeloxColumnarBatch.cc
-    )
+    shuffle/VectorMaker.h shuffle/VectorMaker.cpp)
 add_library(velox SHARED ${VELOX_SRCS})
 
 target_include_directories(velox PUBLIC
