@@ -14,6 +14,20 @@
 
 using namespace facebook::velox;
 
+class SimpleVectorLoader : public VectorLoader {
+ public:
+  explicit SimpleVectorLoader(std::function<VectorPtr(RowSet)> loader)
+      : loader_(loader) {}
+
+  void loadInternal(RowSet rows, ValueHook* hook, VectorPtr* result) override {
+    VELOX_CHECK(!hook, "SimpleVectorLoader doesn't support ValueHook");
+    *result = loader_(rows);
+  }
+
+ private:
+  std::function<VectorPtr(RowSet)> loader_;
+};
+
 class VectorMaker {
  public:
   explicit VectorMaker(memory::MemoryPool* pool) : pool_(pool) {}
