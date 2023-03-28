@@ -1395,5 +1395,4 @@ velox::RowVectorPtr VeloxSplitter::rowVector(
       GetDefaultWrappedVeloxMemoryPool(), rowType, velox::BufferPtr(nullptr), vectorSize, children);
 }
 
-
 } // namespace gluten

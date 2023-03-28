@@ -274,7 +274,8 @@ class VeloxSplitter : public SplitterBase {
       std::function<T(facebook::velox::vector_size_t /*row*/)> valueAt,
       std::function<bool(facebook::velox::vector_size_t /*row*/)> isNullAt = nullptr,
       const facebook::velox::TypePtr& type = facebook::velox::CppToType<T>::create()) {
-    auto flatVector = facebook::velox::BaseVector::create<facebook::velox::FlatVector<T>>(type, size, GetDefaultWrappedVeloxMemoryPool());
+    auto flatVector = facebook::velox::BaseVector::create<facebook::velox::FlatVector<T>>(
+        type, size, GetDefaultWrappedVeloxMemoryPool());
     for (facebook::velox::vector_size_t i = 0; i < size; i++) {
       if (isNullAt && isNullAt(i)) {
         flatVector->setNull(i, true);
