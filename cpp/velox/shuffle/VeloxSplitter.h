@@ -248,7 +248,7 @@ class VeloxSplitter : public SplitterBase {
       for (; pos < end; ++pos) {
         auto row_id = row_offset_2_row_id_[pos];
         T temp = fixed_type_decoded_vector_.valueAt<T>(row_id); // copy
-        std::cout << "********** temp = " << (long int)temp << std::endl;
+        std::cout << "********** temp = " << (long long int)temp << std::endl;
         *dst_pid_base++ = temp;
       }
     }
