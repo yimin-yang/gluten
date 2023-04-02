@@ -247,8 +247,8 @@ class VeloxSplitter : public SplitterBase {
       auto end = partition_2_row_offset_[pid + 1];
       for (; pos < end; ++pos) {
         auto row_id = row_offset_2_row_id_[pos];
-        auto temp = fixed_type_decoded_vector_.valueAt<T>(row_id); // copy
-        std::cout << "**********temp = " << temp << std::endl;
+        T temp = fixed_type_decoded_vector_.valueAt<T>(row_id); // copy
+        std::cout << "********** temp = " << (long int)temp << std::endl;
         *dst_pid_base++ = temp;
       }
     }
