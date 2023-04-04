@@ -320,6 +320,7 @@ arrow::Result<std::shared_ptr<arrow::ipc::IpcPayload>> VeloxSplitter::GetSchemaP
 }
 
 arrow::Status VeloxSplitter::DoSplit(const velox::RowVector& rv) {
+  std::cout << "call DoSplit, rv=" << rv.toString() << std::endl;
   auto row_num = rv.size();
 
   RETURN_NOT_OK(CreatePartition2Row(row_num));
@@ -386,6 +387,7 @@ arrow::Status VeloxSplitter::SplitRowVector(const velox::RowVector& rv) {
 }
 
 arrow::Status VeloxSplitter::SplitFixedWidthValueBuffer(const velox::RowVector& rv) {
+  std::cout << "call SplitFixedWidthValueBuffer" << std::endl;
   for (auto col = 0; col < fixed_width_column_count_; ++col) {
     auto col_idx = simple_column_indices_[col];
     auto column = rv.childAt(col_idx);
@@ -517,6 +519,7 @@ arrow::Status VeloxSplitter::SplitBoolType(const velox::VectorPtr& src, const st
 }
 
 arrow::Status VeloxSplitter::SplitValidityBuffer(const velox::RowVector& rv) {
+  std::cout << "SplitValidityBuffer" << std::endl;
   for (size_t col = 0; col < simple_column_indices_.size(); ++col) {
     auto col_idx = simple_column_indices_[col];
     auto column = rv.childAt(col_idx);
@@ -631,6 +634,7 @@ VeloxSplitter::SplitBinaryType(uint32_t binary_idx, const velox::VectorPtr& src,
 }
 
 arrow::Status VeloxSplitter::SplitListArray(const velox::RowVector& rv) {
+  std::cout << "call SplitListArray" << std::endl;
   for (size_t i = 0; i < complex_column_indices_.size(); ++i) {
     auto col_idx = complex_column_indices_[i];
     auto column = rv.childAt(col_idx);
@@ -1074,6 +1078,8 @@ int64_t get_batch_nbytes(const arrow::RecordBatch& rb) {
 } // namespace
 
 arrow::Status VeloxSplitter::CacheRecordBatch(uint32_t partition_id, const arrow::RecordBatch& rb) {
+  std::cout << "call CacheRecordBatch, partition_id=" << partition_id << std::endl;
+  std::cout << "rb=" << rb.ToString() << std::endl;
   int64_t raw_size = get_batch_nbytes(rb);
   raw_partition_lengths_[partition_id] += raw_size;
   auto payload = std::make_shared<arrow::ipc::IpcPayload>();
