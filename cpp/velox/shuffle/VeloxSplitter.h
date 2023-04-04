@@ -232,6 +232,7 @@ class VeloxSplitter : public SplitterBase {
 
   template <typename T>
   arrow::Status SplitFixedType(const facebook::velox::VectorPtr& src, const std::vector<uint8_t*>& dst_addrs) {
+    std::cout << "call SplitFixedType" << std::endl;
     fixed_type_decoded_vector_.decode(*src);
 
     std::transform(
