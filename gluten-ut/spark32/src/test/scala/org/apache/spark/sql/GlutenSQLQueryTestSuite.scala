@@ -220,6 +220,10 @@ class GlutenSQLQueryTestSuite extends QueryTest with SharedSparkSession with SQL
    * Please add to the supported list after enabling a sql test.
    */
   private val veloxSupportedList: Set[String] = Set(
+    "count.sql"
+  )
+  /**
+  private val veloxSupportedList: Set[String] = Set(
     "array.sql",
     "bitwise.sql",
     "cast.sql",
@@ -394,7 +398,7 @@ class GlutenSQLQueryTestSuite extends QueryTest with SharedSparkSession with SQL
     "window.sql",
     "udf-union.sql",
     "udf-window.sql"
-  )
+  ) */
 
   /** List of supported cases to run with Clickhouse backend, in lower case.
    * Please add to the supported list after enabling a sql test.

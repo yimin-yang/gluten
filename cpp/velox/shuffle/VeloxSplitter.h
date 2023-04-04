@@ -218,6 +218,7 @@ class VeloxSplitter : public SplitterBase {
 
   template <typename T>
   arrow::Status SplitFixedType(const uint8_t* src_addr, const std::vector<uint8_t*>& dst_addrs) {
+    std::cout << "call SplitFixedType" << std::endl;
     std::transform(
         dst_addrs.begin(),
         dst_addrs.end(),
