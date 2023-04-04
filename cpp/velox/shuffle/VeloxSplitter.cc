@@ -1078,8 +1078,7 @@ int64_t get_batch_nbytes(const arrow::RecordBatch& rb) {
 } // namespace
 
 arrow::Status VeloxSplitter::CacheRecordBatch(uint32_t partition_id, const arrow::RecordBatch& rb) {
-  std::cout << "call CacheRecordBatch, partition_id=" << partition_id << std::endl;
-  std::cout << "rb=" << rb.ToString() << std::endl;
+  std::cout << "call CacheRecordBatch, partition_id=" << partition_id << "    rb=" << rb.ToString() << std::endl;
   int64_t raw_size = get_batch_nbytes(rb);
   raw_partition_lengths_[partition_id] += raw_size;
   auto payload = std::make_shared<arrow::ipc::IpcPayload>();
