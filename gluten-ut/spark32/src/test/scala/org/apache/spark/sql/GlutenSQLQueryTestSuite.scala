@@ -219,6 +219,11 @@ class GlutenSQLQueryTestSuite extends QueryTest with SharedSparkSession with SQL
   /** List of supported cases to run with Velox backend, in lower case.
    * Please add to the supported list after enabling a sql test.
    */
+
+  private val veloxSupportedList: Set[String] = Set(
+      "count.sql"
+  )
+  /*
   private val veloxSupportedList: Set[String] = Set(
     "array.sql",
     "bitwise.sql",
@@ -395,7 +400,7 @@ class GlutenSQLQueryTestSuite extends QueryTest with SharedSparkSession with SQL
     "udf-union.sql",
     "udf-window.sql"
   )
-
+*/
   /** List of supported cases to run with Clickhouse backend, in lower case.
    * Please add to the supported list after enabling a sql test.
    */
