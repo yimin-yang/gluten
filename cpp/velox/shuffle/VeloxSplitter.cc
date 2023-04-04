@@ -287,6 +287,7 @@ arrow::Status VeloxSplitter::UpdateInputHasNull(const velox::RowVector& rv) {
     if (!input_has_null_[col]) {
       auto col_idx = simple_column_indices_[col];
       if (VectorHasNull(rv.childAt(col_idx))) {
+        std::cout << "col_idx=" << col_idx << " VectorHasNull=true" << std::endl;
         input_has_null_[col] = true;
       }
     }
@@ -520,6 +521,9 @@ arrow::Status VeloxSplitter::SplitValidityBuffer(const velox::RowVector& rv) {
     auto col_idx = simple_column_indices_[col];
     auto column = rv.childAt(col_idx);
     if (VectorHasNull(column)) {
+
+      std::cout << "SplitValidityBuffer col_idx=" << col_idx << " VectorHasNull=true" << std::endl;
+
       auto& dst_addrs = partition_validity_addrs_[col];
       for (auto pid = 0; pid < num_partitions_; ++pid) {
         if (partition_2_row_count_[pid] > 0 && dst_addrs[pid] == nullptr) {
