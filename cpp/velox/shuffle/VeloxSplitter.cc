@@ -335,8 +335,6 @@ arrow::Status VeloxSplitter::DoSplit(const velox::RowVector& rv) {
     for (int j = 0; j < row_num; j++) {
       std::cout << "column->encoding()=" << column->encoding() << std::endl;
       std::cout << "column->toString()=" << column->toString() << std::endl;
-      std::cout << "column->values()=" << column->values() << std::endl;
-      std::cout << "column->nulls()=" << column->nulls() << std::endl;
     }
   }
   RETURN_NOT_OK(CreatePartition2Row(row_num));
