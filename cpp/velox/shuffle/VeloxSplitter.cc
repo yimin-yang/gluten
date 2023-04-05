@@ -67,6 +67,16 @@ bool VectorHasNull(const velox::VectorPtr& vp) {
 #endif
 }
 
+
+bool NewVectorHasNull(const velox::VectorPtr& vp) {
+  for (int i = 0; i < vp->size(); i++) {
+    if (vp->isNullAt(i)) {
+      return true;
+    }
+  }
+  return false;
+}
+
 velox::RowVectorPtr GetRowVector(VeloxColumnarBatch* vcb) {
   auto rv = vcb->getRowVector();
   for (auto& child : rv->children()) {
@@ -292,7 +302,7 @@ arrow::Status VeloxSplitter::UpdateInputHasNull(const velox::RowVector& rv) {
     // once input_has_null_ is set to true, we didn't reset it after spill
     if (!input_has_null_[col]) {
       auto col_idx = simple_column_indices_[col];
-      if (VectorHasNull(rv.childAt(col_idx))) {
+      if (NewVectorHasNull(rv.childAt(col_idx))) {
         std::cout << "col_idx=" << col_idx << " VectorHasNull=true" << std::endl;
         input_has_null_[col] = true;
       }
@@ -333,8 +343,8 @@ arrow::Status VeloxSplitter::DoSplit(const velox::RowVector& rv) {
   for (int i = 0; i < rv.childrenSize(); i++) {
     auto column = rv.childAt(i);
     for (int j = 0; j < row_num; j++) {
-      std::cout << "column->encoding()=" << column->encoding() << std::endl;
-      std::cout << "column->toString()=" << column->toString() << std::endl;
+      std::cout << "i= " << i << " j=" << j << "column->encoding()=" << column->encoding() << std::endl;
+      std::cout << "i= " << i << " j=" << j << "column->toString()=" << column->toString() << std::endl;
     }
   }
   RETURN_NOT_OK(CreatePartition2Row(row_num));
@@ -537,7 +547,7 @@ arrow::Status VeloxSplitter::SplitValidityBuffer(const velox::RowVector& rv) {
   for (size_t col = 0; col < simple_column_indices_.size(); ++col) {
     auto col_idx = simple_column_indices_[col];
     auto column = rv.childAt(col_idx);
-    if (VectorHasNull(column)) {
+    if (NewVectorHasNull(column)) {
 
       std::cout << "SplitValidityBuffer col_idx=" << col_idx << " VectorHasNull=true" << std::endl;
 
