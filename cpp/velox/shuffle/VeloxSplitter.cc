@@ -200,6 +200,12 @@ arrow::Status VeloxSplitter::SetCompressType(arrow::Compression::type compressed
 }
 
 arrow::Status VeloxSplitter::Split(ColumnarBatch* cb) {
+  std::cout << "call VeloxSplitter::DoSplit, cb->exportArrowArray()=" << cb->exportArrowArray() << std::endl;
+  std::cout << "call VeloxSplitter::DoSplit, cb->exportArrowSchema()=" << cb->exportArrowSchema() << std::endl;
+  std::cout << "call VeloxSplitter::DoSplit, cb->GetBytes()=" << cb->GetBytes() << std::endl;
+  std::cout << "call VeloxSplitter::DoSplit, cb->GetNumColumns()=" << cb->GetNumColumns() << std::endl;
+  std::cout << "call VeloxSplitter::DoSplit, cb->GetNumRows()=" << cb->GetNumRows() << std::endl;
+  std::cout << "call VeloxSplitter::DoSplit, cb->GetType()=" << cb->GetType() << std::endl;
   auto veloxColumnBatch = dynamic_cast<VeloxColumnarBatch*>(cb);
   auto& rv = *veloxColumnBatch->getFlattenedRowVector();
   RETURN_NOT_OK(InitFromRowVector(rv));
@@ -209,6 +215,7 @@ arrow::Status VeloxSplitter::Split(ColumnarBatch* cb) {
 }
 
 arrow::Status VeloxSplitter::Stop() {
+  std::cout << "call VeloxSplitter::Stop()" << std::endl;
   // open data file output stream
   std::shared_ptr<arrow::io::FileOutputStream> fout;
   ARROW_ASSIGN_OR_RAISE(fout, arrow::io::FileOutputStream::Open(options_.data_file, true));
@@ -313,7 +320,20 @@ arrow::Result<std::shared_ptr<arrow::ipc::IpcPayload>> VeloxSplitter::GetSchemaP
 
 arrow::Status VeloxSplitter::DoSplit(const velox::RowVector& rv) {
   std::cout << "call DoSplit, rv=" << rv.toString() << std::endl;
+  std::cout << "rv.childrenSize()=" << rv.childrenSize() << std::endl;
+  std::cout << "rv.encoding()=" << rv.encoding() << std::endl;
   auto row_num = rv.size();
+
+  for (int i = 0; i < rv.childrenSize(); i++) {
+    auto column = rv.childAt(i);
+    for (int j = 0; j < row_num; j++) {
+      std::cout << "column->encoding()=" << column->encoding() << std::endl;
+      std::cout << "column->toString()=" << column->toString() << std::endl;
+      std::cout << "column->valuesAsVoid()=" << column->valuesAsVoid() << std::endl;
+      std::cout << "column->values()=" << column->values() << std::endl;
+      std::cout << "column->nulls()=" << column->nulls() << std::endl;
+    }
+  }
 
   RETURN_NOT_OK(CreatePartition2Row(row_num));
 
@@ -754,7 +774,7 @@ arrow::Status VeloxSplitter::SplitBinaryArray(const velox::RowVector& rv) {
 }
 
 arrow::Status VeloxSplitter::VeloxType2ArrowSchema(const velox::TypePtr& type) {
-  std::cout << "call VeloxType2ArrowSchema" << std::endl;
+  std::cout << "call VeloxType2ArrowSchema, type=" << type << std::endl;
 
   auto out = std::make_shared<ArrowSchema>();
   auto rvp = velox::RowVector::createEmpty(type, GetDefaultWrappedVeloxMemoryPool().get());
@@ -1313,6 +1333,13 @@ arrow::Status VeloxSinglePartSplitter::Partition(const velox::RowVector& rv) {
 }
 
 arrow::Status VeloxSinglePartSplitter::Split(ColumnarBatch* cb) {
+  std::cout << "call VeloxSinglePartSplitter::DoSplit, cb->exportArrowArray()=" << cb->exportArrowArray() << std::endl;
+  std::cout << "call VeloxSinglePartSplitter::DoSplit, cb->exportArrowSchema()=" << cb->exportArrowSchema() << std::endl;
+  std::cout << "call VeloxSinglePartSplitter::DoSplit, cb->GetBytes()=" << cb->GetBytes() << std::endl;
+  std::cout << "call VeloxSinglePartSplitter::DoSplit, cb->GetNumColumns()=" << cb->GetNumColumns() << std::endl;
+  std::cout << "call VeloxSinglePartSplitter::DoSplit, cb->GetNumRows()=" << cb->GetNumRows() << std::endl;
+  std::cout << "call VeloxSinglePartSplitter::DoSplit, cb->GetType()=" << cb->GetType() << std::endl;
+
   auto veloxColumnBatch = dynamic_cast<VeloxColumnarBatch*>(cb);
   auto vp = veloxColumnBatch->getFlattenedRowVector();
   RETURN_NOT_OK(InitFromRowVector(*vp));
@@ -1330,6 +1357,7 @@ arrow::Status VeloxSinglePartSplitter::Split(ColumnarBatch* cb) {
 }
 
 arrow::Status VeloxSinglePartSplitter::Stop() {
+  std::cout << "call VeloxSinglePartSplitter::Stop()" << std::endl;
   // open data file output stream
   std::shared_ptr<arrow::io::FileOutputStream> fout;
   ARROW_ASSIGN_OR_RAISE(fout, arrow::io::FileOutputStream::Open(options_.data_file, true));
@@ -1430,6 +1458,13 @@ arrow::Status VeloxHashSplitter::InitColumnTypes(const velox::RowVector& rv) {
 }
 
 arrow::Status VeloxHashSplitter::Split(ColumnarBatch* cb) {
+  std::cout << "call VeloxHashSplitter::DoSplit, cb->exportArrowArray()=" << cb->exportArrowArray() << std::endl;
+  std::cout << "call VeloxHashSplitter::DoSplit, cb->exportArrowSchema()=" << cb->exportArrowSchema() << std::endl;
+  std::cout << "call VeloxHashSplitter::DoSplit, cb->GetBytes()=" << cb->GetBytes() << std::endl;
+  std::cout << "call VeloxHashSplitter::DoSplit, cb->GetNumColumns()=" << cb->GetNumColumns() << std::endl;
+  std::cout << "call VeloxHashSplitter::DoSplit, cb->GetNumRows()=" << cb->GetNumRows() << std::endl;
+  std::cout << "call VeloxHashSplitter::DoSplit, cb->GetType()=" << cb->GetType() << std::endl;
+
   auto veloxColumnBatch = dynamic_cast<VeloxColumnarBatch*>(cb);
   auto& rv = *veloxColumnBatch->getFlattenedRowVector();
   RETURN_NOT_OK(InitFromRowVector(rv));
@@ -1491,6 +1526,13 @@ arrow::Status VeloxFallbackRangeSplitter::Partition(const velox::RowVector& rv) 
 }
 
 arrow::Status VeloxFallbackRangeSplitter::Split(ColumnarBatch* cb) {
+  std::cout << "call VeloxFallbackRangeSplitter::DoSplit, cb->exportArrowArray()=" << cb->exportArrowArray() << std::endl;
+  std::cout << "call VeloxFallbackRangeSplitter::DoSplit, cb->exportArrowSchema()=" << cb->exportArrowSchema() << std::endl;
+  std::cout << "call VeloxFallbackRangeSplitter::DoSplit, cb->GetBytes()=" << cb->GetBytes() << std::endl;
+  std::cout << "call VeloxFallbackRangeSplitter::DoSplit, cb->GetNumColumns()=" << cb->GetNumColumns() << std::endl;
+  std::cout << "call VeloxFallbackRangeSplitter::DoSplit, cb->GetNumRows()=" << cb->GetNumRows() << std::endl;
+  std::cout << "call VeloxFallbackRangeSplitter::DoSplit, cb->GetType()=" << cb->GetType() << std::endl;
+
   auto veloxColumnBatch = dynamic_cast<VeloxColumnarBatch*>(cb);
   auto& rv = *veloxColumnBatch->getFlattenedRowVector();
   RETURN_NOT_OK(InitFromRowVector(rv));
