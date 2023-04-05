@@ -200,9 +200,6 @@ arrow::Status VeloxSplitter::SetCompressType(arrow::Compression::type compressed
 }
 
 arrow::Status VeloxSplitter::Split(ColumnarBatch* cb) {
-  std::cout << "call VeloxSplitter::DoSplit, cb->exportArrowArray()=" << cb->exportArrowArray() << std::endl;
-  std::cout << "call VeloxSplitter::DoSplit, cb->exportArrowSchema()=" << cb->exportArrowSchema() << std::endl;
-  std::cout << "call VeloxSplitter::DoSplit, cb->GetBytes()=" << cb->GetBytes() << std::endl;
   std::cout << "call VeloxSplitter::DoSplit, cb->GetNumColumns()=" << cb->GetNumColumns() << std::endl;
   std::cout << "call VeloxSplitter::DoSplit, cb->GetNumRows()=" << cb->GetNumRows() << std::endl;
   std::cout << "call VeloxSplitter::DoSplit, cb->GetType()=" << cb->GetType() << std::endl;
@@ -1333,9 +1330,6 @@ arrow::Status VeloxSinglePartSplitter::Partition(const velox::RowVector& rv) {
 }
 
 arrow::Status VeloxSinglePartSplitter::Split(ColumnarBatch* cb) {
-  std::cout << "call VeloxSinglePartSplitter::DoSplit, cb->exportArrowArray()=" << cb->exportArrowArray() << std::endl;
-  std::cout << "call VeloxSinglePartSplitter::DoSplit, cb->exportArrowSchema()=" << cb->exportArrowSchema() << std::endl;
-  std::cout << "call VeloxSinglePartSplitter::DoSplit, cb->GetBytes()=" << cb->GetBytes() << std::endl;
   std::cout << "call VeloxSinglePartSplitter::DoSplit, cb->GetNumColumns()=" << cb->GetNumColumns() << std::endl;
   std::cout << "call VeloxSinglePartSplitter::DoSplit, cb->GetNumRows()=" << cb->GetNumRows() << std::endl;
   std::cout << "call VeloxSinglePartSplitter::DoSplit, cb->GetType()=" << cb->GetType() << std::endl;
@@ -1458,9 +1452,6 @@ arrow::Status VeloxHashSplitter::InitColumnTypes(const velox::RowVector& rv) {
 }
 
 arrow::Status VeloxHashSplitter::Split(ColumnarBatch* cb) {
-  std::cout << "call VeloxHashSplitter::DoSplit, cb->exportArrowArray()=" << cb->exportArrowArray() << std::endl;
-  std::cout << "call VeloxHashSplitter::DoSplit, cb->exportArrowSchema()=" << cb->exportArrowSchema() << std::endl;
-  std::cout << "call VeloxHashSplitter::DoSplit, cb->GetBytes()=" << cb->GetBytes() << std::endl;
   std::cout << "call VeloxHashSplitter::DoSplit, cb->GetNumColumns()=" << cb->GetNumColumns() << std::endl;
   std::cout << "call VeloxHashSplitter::DoSplit, cb->GetNumRows()=" << cb->GetNumRows() << std::endl;
   std::cout << "call VeloxHashSplitter::DoSplit, cb->GetType()=" << cb->GetType() << std::endl;
@@ -1526,9 +1517,6 @@ arrow::Status VeloxFallbackRangeSplitter::Partition(const velox::RowVector& rv) 
 }
 
 arrow::Status VeloxFallbackRangeSplitter::Split(ColumnarBatch* cb) {
-  std::cout << "call VeloxFallbackRangeSplitter::DoSplit, cb->exportArrowArray()=" << cb->exportArrowArray() << std::endl;
-  std::cout << "call VeloxFallbackRangeSplitter::DoSplit, cb->exportArrowSchema()=" << cb->exportArrowSchema() << std::endl;
-  std::cout << "call VeloxFallbackRangeSplitter::DoSplit, cb->GetBytes()=" << cb->GetBytes() << std::endl;
   std::cout << "call VeloxFallbackRangeSplitter::DoSplit, cb->GetNumColumns()=" << cb->GetNumColumns() << std::endl;
   std::cout << "call VeloxFallbackRangeSplitter::DoSplit, cb->GetNumRows()=" << cb->GetNumRows() << std::endl;
   std::cout << "call VeloxFallbackRangeSplitter::DoSplit, cb->GetType()=" << cb->GetType() << std::endl;
