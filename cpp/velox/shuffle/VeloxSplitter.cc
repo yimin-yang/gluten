@@ -68,9 +68,9 @@ bool VectorHasNull(const velox::VectorPtr& vp) {
 }
 
 
-bool NewVectorHasNull(const velox::VectorPtr& vp) {
-  for (int i = 0; i < vp->size(); i++) {
-    if (vp->isNullAt(i)) {
+bool NewVectorHasNull(const facebook::velox::DecodedVector& vp) {
+  for (int i = 0; i < vp.size(); i++) {
+    if (vp.isNullAt(i)) {
       return true;
     }
   }
@@ -302,7 +302,9 @@ arrow::Status VeloxSplitter::UpdateInputHasNull(const velox::RowVector& rv) {
     // once input_has_null_ is set to true, we didn't reset it after spill
     if (!input_has_null_[col]) {
       auto col_idx = simple_column_indices_[col];
-      if (NewVectorHasNull(rv.childAt(col_idx))) {
+      auto column = rv.childAt(col_idx);
+      validity_decoded_vector_.decode(*column);
+      if (NewVectorHasNull(validity_decoded_vector_)) {
         std::cout << "col_idx=" << col_idx << " VectorHasNull=true" << std::endl;
         input_has_null_[col] = true;
       }
@@ -547,7 +549,8 @@ arrow::Status VeloxSplitter::SplitValidityBuffer(const velox::RowVector& rv) {
   for (size_t col = 0; col < simple_column_indices_.size(); ++col) {
     auto col_idx = simple_column_indices_[col];
     auto column = rv.childAt(col_idx);
-    if (NewVectorHasNull(column)) {
+    validity_decoded_vector_.decode(*column);
+    if (NewVectorHasNull(validity_decoded_vector_)) {
 
       std::cout << "SplitValidityBuffer col_idx=" << col_idx << " VectorHasNull=true" << std::endl;
 
