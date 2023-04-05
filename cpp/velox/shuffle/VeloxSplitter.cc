@@ -80,7 +80,7 @@ bool VectorHasNull(const velox::VectorPtr& vp) {
 // VeloxSplitter
 arrow::Result<std::shared_ptr<VeloxSplitter>>
 VeloxSplitter::Make(const std::string& name, uint32_t num_partitions, SplitOptions options) {
-  std::cout << "********call Make, name=" << name << std::endl;
+  std::cout << "********call Make, name=" << name << << " num_partitions=" << num_partitions << std::endl;
   std::shared_ptr<VeloxSplitter> splitter = nullptr;
   if (name == "hash") {
     splitter = VeloxSplitter::Create<VeloxHashSplitter>(num_partitions, options);
