@@ -305,7 +305,7 @@ arrow::Status VeloxSplitter::UpdateInputHasNull(const velox::RowVector& rv) {
       auto col_idx = simple_column_indices_[col];
       auto column = rv.childAt(col_idx);
 //      validity_decoded_vector_.decode(*column);
-      if (VectorHasNull(column) || (col_idx == 1)) {
+      if (VectorHasNull(column) || (col_idx == 0)) {
         std::cout << "col_idx=" << col_idx << " VectorHasNull=true" << std::endl;
         input_has_null_[col] = true;
       }
@@ -551,7 +551,7 @@ arrow::Status VeloxSplitter::SplitValidityBuffer(const velox::RowVector& rv) {
     auto col_idx = simple_column_indices_[col];
     auto column = rv.childAt(col_idx);
 //    validity_decoded_vector_.decode(*column);
-    if (VectorHasNull(column) || (col_idx == 1)) {
+    if (VectorHasNull(column) || (col_idx == 0)) {
 
       std::cout << "SplitValidityBuffer col_idx=" << col_idx << " VectorHasNull=true" << std::endl;
 
