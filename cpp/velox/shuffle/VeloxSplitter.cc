@@ -59,7 +59,7 @@ namespace {
 bool VectorHasNull(const velox::VectorPtr& vp) {
 #if 1
   // work well
-//  return vp->mayHaveNulls() || vp->countNulls(vp->nulls(), vp->size()) != 0;
+//  return vp->mayHaveNulls() && vp->countNulls(vp->nulls(), vp->size()) != 0;
   return vp->mayHaveNulls();
 #else
   // doesn't work
