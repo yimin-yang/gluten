@@ -59,7 +59,7 @@ namespace {
 bool VectorHasNull(const velox::VectorPtr& vp) {
 #if 1
   // work well
-  return vp->mayHaveNulls() && vp->countNulls(vp->nulls(), vp->size()) != 0;
+  return vp->mayHaveNullsRecursive() && vp->countNulls(vp->nulls(), vp->size()) != 0;
 //  return vp->mayHaveNulls();
 #else
   // doesn't work
@@ -551,7 +551,7 @@ arrow::Status VeloxSplitter::SplitValidityBuffer(const velox::RowVector& rv) {
     auto col_idx = simple_column_indices_[col];
     auto column = rv.childAt(col_idx);
 //    validity_decoded_vector_.decode(*column);
-    if (VectorHasNull(column) || (col_idx == 0)) {
+    if (VectorHasNull(column)) {
 
       std::cout << "SplitValidityBuffer col_idx=" << col_idx << " VectorHasNull=true" << std::endl;
 
