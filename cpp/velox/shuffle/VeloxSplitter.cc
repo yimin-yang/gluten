@@ -345,19 +345,28 @@ arrow::Status VeloxSplitter::DoSplit(const velox::RowVector& rv) {
   auto row_num = rv.size();
   for (int i = 0; i < rv.childrenSize(); i++) {
     auto column = rv.childAt(i);
-    for (int j = 0; j < row_num; j++) {
-      std::cout << "i= " << i << " j=" << j << "column->encoding()=" << column->encoding() << std::endl;
-      std::cout << "i= " << i << " j=" << j << "column->toString()=" << column->toString() << std::endl;
-      std::cout << "i= " << i << " j=" << j << "typeid(column).name()=" << typeid(column).name() << std::endl;
 
-      if (column->encoding() == facebook::velox::VectorEncoding::Simple::DICTIONARY) {
-        if (column->nulls()) {
-          std::cout << "column->nulls()=" << column->nulls() << std::endl;
-        }
-        if (column->valueVector()) {
-          std::cout << "column->valueVector()=" << column->valueVector() << std::endl;
-        }
+    std::cout << "i=" << i << " column->encoding()=" << column->encoding() << std::endl;
+    std::cout << "i=" << i << " column->toString()=" << column->toString() << std::endl;
+    std::cout << "i=" << i << " typeid(column).name()=" << typeid(column).name() << std::endl;
+
+    if (column->encoding() == facebook::velox::VectorEncoding::Simple::DICTIONARY) {
+      if (column->nulls()) {
+        std::cout << "column->nulls()=" << column->nulls() << std::endl;
+        std::cout << "column->nulls()->size()=" << column->nulls()->size() << std::endl;
       }
+      if (column->values()) {
+        std::cout << "column->values()=" << column->values() << std::endl;
+        std::cout << "column->values()->size()=" << column->values()->size() << std::endl;
+      }
+      if (column->valueVector()) {
+        std::cout << "column->valueVector()=" << column->valueVector() << std::endl;
+        std::cout << "column->valueVector()->size()=" << column->valueVector()->size() << std::endl;
+      }
+    }
+
+    for (int j = 0; j < row_num; j++) {
+
     }
   }
   RETURN_NOT_OK(CreatePartition2Row(row_num));
