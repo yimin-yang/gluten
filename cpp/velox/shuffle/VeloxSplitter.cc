@@ -63,9 +63,9 @@ bool VectorHasNull(const velox::VectorPtr& vp) {
   std::cout << "call VectorHasNull, vp->countNulls(vp->nulls(), vp->size())=" << vp->countNulls(vp->nulls(), vp->size()) << std::endl;
   bool res = vp->mayHaveNulls() && vp->countNulls(vp->nulls(), vp->size()) != 0;
   std::cout << "call VectorHasNull, res=" << res << std::endl;
-  std::cout << "call VectorHasNull, vp->nulls()=" << vp->nulls() << std::endl;
-  std::cout << "call VectorHasNull, vp->values()=" << vp->values() << std::endl;
-  return res;
+//  std::cout << "call VectorHasNull, vp->nulls()=" << vp->nulls() << std::endl;
+//  std::cout << "call VectorHasNull, vp->values()=" << vp->values() << std::endl;
+  return vp->mayHaveNulls();
 #else
   // doesn't work
   auto null_count = vp->getNullCount();
