@@ -59,7 +59,13 @@ namespace {
 bool VectorHasNull(const velox::VectorPtr& vp) {
 #if 1
   // work well
-  return vp->mayHaveNulls() && vp->countNulls(vp->nulls(), vp->size()) != 0;
+  std::cout << "call VectorHasNull, vp->mayHaveNulls()=" << vp->mayHaveNulls() << std::endl;
+  std::cout << "call VectorHasNull, vp->countNulls(vp->nulls(), vp->size())=" << vp->countNulls(vp->nulls(), vp->size()) << std::endl;
+  bool res = vp->mayHaveNulls() && vp->countNulls(vp->nulls(), vp->size()) != 0;
+  std::cout << "call VectorHasNull, res=" << res << std::endl;
+  std::cout << "call VectorHasNull, vp->nulls()=" << vp->nulls() << std::endl;
+  std::cout << "call VectorHasNull, vp->values()=" << vp->values() << std::endl;
+  return res;
 #else
   // doesn't work
   auto null_count = vp->getNullCount();
@@ -68,9 +74,9 @@ bool VectorHasNull(const velox::VectorPtr& vp) {
 }
 
 
-bool NewVectorHasNull(const facebook::velox::DecodedVector& vp) {
-  for (int i = 0; i < vp.size(); i++) {
-    if (vp.isNullAt(i)) {
+bool NewVectorHasNull(const velox::VectorPtr& vp) {
+  for (int i = 0; i < vp->size(); i++) {
+    if (vp->isNullAt(i)) {
       return true;
     }
   }
@@ -303,8 +309,8 @@ arrow::Status VeloxSplitter::UpdateInputHasNull(const velox::RowVector& rv) {
     if (!input_has_null_[col]) {
       auto col_idx = simple_column_indices_[col];
       auto column = rv.childAt(col_idx);
-      validity_decoded_vector_.decode(*column);
-      if (NewVectorHasNull(validity_decoded_vector_)) {
+//      validity_decoded_vector_.decode(*column);
+      if (VectorHasNull(column)) {
         std::cout << "col_idx=" << col_idx << " VectorHasNull=true" << std::endl;
         input_has_null_[col] = true;
       }
@@ -549,8 +555,8 @@ arrow::Status VeloxSplitter::SplitValidityBuffer(const velox::RowVector& rv) {
   for (size_t col = 0; col < simple_column_indices_.size(); ++col) {
     auto col_idx = simple_column_indices_[col];
     auto column = rv.childAt(col_idx);
-    validity_decoded_vector_.decode(*column);
-    if (NewVectorHasNull(validity_decoded_vector_)) {
+//    validity_decoded_vector_.decode(*column);
+    if (VectorHasNull(column)) {
 
       std::cout << "SplitValidityBuffer col_idx=" << col_idx << " VectorHasNull=true" << std::endl;
 

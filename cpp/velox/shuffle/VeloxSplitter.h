@@ -385,7 +385,7 @@ class VeloxSplitter : public SplitterBase {
   facebook::velox::DecodedVector binary_type_decoded_vector_;
   facebook::velox::DecodedVector partition_decoded_vector_;
   facebook::velox::DecodedVector calc_buf_decoded_vector_;
-  facebook::velox::DecodedVector validity_decoded_vector_;
+//  facebook::velox::DecodedVector validity_decoded_vector_;
 }; // class VeloxSplitter
 
 class VeloxRoundRobinSplitter final : public VeloxSplitter {
