@@ -928,6 +928,8 @@ TEST_F(VeloxSplitterTest, TestRoundRobinStructArraySplitter) {
     }
     // TODO: wait to fix null value
     // ASSERT_TRUE(rb->Equals(*expected[i]));
+    std::cout << "result:" << rb->ToString() << std::endl;
+    std::cout << "expect:" << expected[i]->ToString() << std::endl;
   }
 }
 
