@@ -351,10 +351,10 @@ arrow::Status VeloxSplitter::DoSplit(const velox::RowVector& rv) {
     std::cout << "i=" << i << " typeid(column).name()=" << typeid(column).name() << std::endl;
 
     if (column->encoding() == facebook::velox::VectorEncoding::Simple::DICTIONARY) {
-      if (column->nulls()) {
-        std::cout << "column->nulls()=" << column->nulls() << std::endl;
-        std::cout << "column->nulls()->size()=" << column->nulls()->size() << std::endl;
-      }
+//      if (column->nulls()) {
+//        std::cout << "column->nulls()=" << column->nulls() << std::endl;
+//        std::cout << "column->nulls()->size()=" << column->nulls()->size() << std::endl;
+//      }
 //      if (column->values()) {
 //        std::cout << "column->values()=" << column->values() << std::endl;
 //        std::cout << "column->values()->size()=" << column->values()->size() << std::endl;
@@ -363,6 +363,7 @@ arrow::Status VeloxSplitter::DoSplit(const velox::RowVector& rv) {
         std::cout << "column->valueVector()=" << column->valueVector() << std::endl;
         std::cout << "column->valueVector()->size()=" << column->valueVector()->size() << std::endl;
       }
+      facebook::velox::printNulls(column->nulls(), column->size());
     }
 
     for (int j = 0; j < row_num; j++) {
