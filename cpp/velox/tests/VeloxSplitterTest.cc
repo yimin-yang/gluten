@@ -979,7 +979,7 @@ TEST_F(VeloxSplitterTest, TestRoundRobinStructArraySplitter) {
   std::cout << "temp->n_children=" << temp->n_children << std::endl;
   auto temp2 = cb->exportArrowSchema();
   std::cout << "temp2=" << temp2 << std::endl;
-  splitter_.Split(cb);
+  splitter_->Split(cb);
 
   ASSERT_NOT_OK(splitter_->Stop());
 
