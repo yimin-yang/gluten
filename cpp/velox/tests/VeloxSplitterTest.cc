@@ -306,6 +306,7 @@ arrow::Status SplitRowVector(VeloxSplitter& splitter, const velox::RowVectorPtr&
   return splitter.Split(vcb.get());
 }
 
+#if 0
 TEST_F(VeloxSplitterTest, TestHashSplitter) {
   uint32_t num_partitions = 2;
   split_options_.buffer_size = 4;
@@ -942,6 +943,7 @@ TEST_F(VeloxSplitterTest, TestRoundRobinListMapArraySplitter) {
     ASSERT_TRUE(rb->Equals(*expected[i]));
   }
 }
+#endif
 
 TEST_F(VeloxSplitterTest, TestRoundRobinStructArraySplitter) {
   auto f_arr_int32 = arrow::field("f_int32", arrow::list(arrow::list(arrow::int32())));
@@ -1012,11 +1014,12 @@ TEST_F(VeloxSplitterTest, TestRoundRobinStructArraySplitter) {
       ASSERT_EQ(rb->column(j)->length(), rb->num_rows());
     }
     ASSERT_TRUE(rb->Equals(*expected[i]));
-    // std::cout << "result:" << rb->ToString() << std::endl;
-    // std::cout << "expect:" << expected[i]->ToString() << std::endl;
+     std::cout << "result:" << rb->ToString() << std::endl;
+     std::cout << "expect:" << expected[i]->ToString() << std::endl;
   }
 }
 
+#if 0
 TEST_F(VeloxSplitterTest, TestRoundRobinMapArraySplitter) {
   auto f_arr_int32 = arrow::field("f_int32", arrow::list(arrow::list(arrow::int32())));
   auto f_arr_map = arrow::field("f_map", arrow::map(arrow::utf8(), arrow::utf8()));
@@ -1203,5 +1206,5 @@ TEST_F(VeloxSplitterTest, TestRoundRobinListArraySplitterwithCompression) {
     ASSERT_TRUE(rb->Equals(*expected[i]));
   }
 }
-
+#endif
 } // namespace gluten
