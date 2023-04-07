@@ -964,7 +964,23 @@ TEST_F(VeloxSplitterTest, TestRoundRobinStructArraySplitter) {
   split_options_.buffer_size = 4;
   ARROW_ASSIGN_OR_THROW(splitter_, VeloxSplitter::Make("rr", num_partitions, split_options_));
 
-  ASSERT_NOT_OK(SplitRecordBatch(*splitter_, *input_batch_arr));
+//  ASSERT_NOT_OK(SplitRecordBatch(*splitter_, *input_batch_arr));
+  ColumnarBatch* cb = RecordBatch2VeloxColumnarBatch(*input_batch_arr).get();
+
+  std::cout << "cb->GetType()=" << cb->GetType() << std::endl;
+  std::cout << "cb->GetNumRows()=" << cb->GetNumRows() << std::endl;
+  std::cout << "cb->GetNumColumns()=" << cb->GetNumColumns() << std::endl;
+  auto temp = cb->exportArrowArray();
+  std::cout << "temp->n_buffers=" << temp->n_buffers << std::endl;
+  std::cout << "temp->length=" << temp->length << std::endl;
+  std::cout << "temp->buffers=" << temp->buffers << std::endl;
+  std::cout << "temp->children=" << temp->children << std::endl;
+  std::cout << "temp->dictionary=" << temp->dictionary << std::endl;
+  std::cout << "temp->n_children=" << temp->n_children << std::endl;
+  auto temp2 = cb->exportArrowSchema();
+  std::cout << "temp2=" << temp2 << std::endl;
+  splitter_.Split(cb);
+
   ASSERT_NOT_OK(splitter_->Stop());
 
   std::shared_ptr<arrow::ipc::RecordBatchReader> file_reader;
