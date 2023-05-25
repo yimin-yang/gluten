@@ -9,20 +9,12 @@
                         },
                         "baseSchema": {
                             "names": [
-                                "receivable_amt_month",
-                                "avg_poi_price_month"
+                                "spark_version"
                             ],
                             "struct": {
                                 "types": [
                                     {
-                                        "i64": {
-                                            "nullability": "NULLABILITY_NULLABLE"
-                                        }
-                                    },
-                                    {
-                                        "decimal": {
-                                            "scale": "2",
-                                            "precision": "10",
+                                        "string": {
                                             "nullability": "NULLABILITY_NULLABLE"
                                         }
                                     }
@@ -30,7 +22,6 @@
                             },
                             "partitionColumns": {
                                 "columnType": [
-                                    "NORMAL_COL",
                                     "NORMAL_COL"
                                 ]
                             }
@@ -52,8 +43,7 @@
                     }
                 },
                 "names": [
-                    "receivable_amt_month#0",
-                    "avg_poi_price_month#1"
+                    "spark_version#0"
                 ]
             }
         }
