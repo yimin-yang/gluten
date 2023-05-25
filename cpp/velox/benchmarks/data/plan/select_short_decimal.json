@@ -1,51 +1,539 @@
 {
-    "relations": [
-        {
-            "root": {
-                "input": {
-                    "read": {
-                        "common": {
-                            "direct": {}
-                        },
-                        "baseSchema": {
-                            "names": [
-                                "spark_version"
-                            ],
-                            "struct": {
-                                "types": [
-                                    {
-                                        "string": {
-                                            "nullability": "NULLABILITY_NULLABLE"
-                                        }
-                                    }
-                                ]
-                            },
-                            "partitionColumns": {
-                                "columnType": [
-                                    "NORMAL_COL"
-                                ]
-                            }
-                        },
-                        "localFiles": {
-                            "items": [
-                                {
-                                    "uriFile": "file:///mnt/DP_disk1/tpch_date_10/lineitem/part-00003-384769b0-b9d4-4ee6-a4a8-89bc01661f71-c000.snappy.parquet",
-                                    "length": "12212684",
-                                    "parquet": {}
-                                },
-                                {
-                                    "uriFile": "file:///mnt/DP_disk1/tpch_date_10/lineitem/part-00199-384769b0-b9d4-4ee6-a4a8-89bc01661f71-c000.snappy.parquet",
-                                    "length": "12211615",
-                                    "parquet": {}
-                                }
-                            ]
-                        }
+  "relations": [
+    {
+      "root": {
+        "input": {
+          "read": {
+            "common": {
+              "direct": {}
+            },
+            "baseSchema": {
+              "names": [
+                "main_poi_id",
+                "main_poi_name",
+                "poi_close_status",
+                "brand_id",
+                "brand_name",
+                "poi_first_cate_id",
+                "poi_first_cate_name",
+                "poi_second_cate_id",
+                "poi_second_cate_name",
+                "poi_third_cate_id",
+                "poi_third_cate_name",
+                "poi_org_id",
+                "poi_org_name",
+                "poi_org_rank",
+                "poi_org_type",
+                "poi_management_type",
+                "solution_pk",
+                "solution_id",
+                "b_chain",
+                "sell_channel",
+                "solution_begin_date",
+                "solution_end_date",
+                "is_solution_online",
+                "is_dp_online",
+                "is_mt_online",
+                "is_discnt",
+                "discnt",
+                "is_self_service",
+                "solution_management_type",
+                "bd_id",
+                "bd_name",
+                "bd_mis_name",
+                "bd_org_unit_id",
+                "bd_management",
+                "mt_contract_id",
+                "mt_contract_num",
+                "mt_coop_name",
+                "dp_contract_id",
+                "mt_org_id",
+                "mt_org_name",
+                "is_proxy",
+                "mt_city_id",
+                "mt_city_name",
+                "product_id",
+                "product_name",
+                "product_type",
+                "partyb_code",
+                "partyb_name",
+                "partner_id",
+                "partner_name",
+                "bu_code",
+                "bu_name",
+                "bg_code",
+                "bg_name",
+                "is_lq_coupon",
+                "is_return_coupon",
+                "product_kind",
+                "dp_brand_id",
+                "dp_brand_name",
+                "prime_vip_status",
+                "sub_category_id",
+                "partition_date"
+              ],
+              "struct": {
+                "types": [
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
                     }
-                },
-                "names": [
-                    "spark_version#0"
+                  },
+                  {
+                    "string": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "string": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "string": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "string": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "string": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "string": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "string": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "string": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "string": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "string": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "string": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "fp64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "string": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "string": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "string": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "string": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "string": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "string": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "string": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "string": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "string": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "string": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "string": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "string": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "string": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "string": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  }
                 ]
+              },
+              "partitionColumns": {
+                "columnType": [
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL"
+                ]
+              }
+            },
+            "localFiles": {
+              "items": [
+                {
+                  "uriFile": "file:///mnt/DP_disk1/tpch_date_10/lineitem/part-00003-384769b0-b9d4-4ee6-a4a8-89bc01661f71-c000.snappy.parquet",
+                  "length": "12212684",
+                  "parquet": {}
+                },
+                {
+                  "uriFile": "file:///mnt/DP_disk1/tpch_date_10/lineitem/part-00199-384769b0-b9d4-4ee6-a4a8-89bc01661f71-c000.snappy.parquet",
+                  "length": "12211615",
+                  "parquet": {}
+                }
+              ]
             }
-        }
-    ]
+          }
+        },
+        "names": [
+          "main_poi_id#0",
+          "main_poi_name#1",
+          "poi_close_status#2",
+          "brand_id#3",
+          "brand_name#4",
+          "poi_first_cate_id#5",
+          "poi_first_cate_name#6",
+          "poi_second_cate_id#7",
+          "poi_second_cate_name#8",
+          "poi_third_cate_id#9",
+          "poi_third_cate_name#10",
+          "poi_org_id#11",
+          "poi_org_name#12",
+          "poi_org_rank#13",
+          "poi_org_type#14",
+          "poi_management_type#15",
+          "solution_pk#16",
+          "solution_id#17",
+          "b_chain#18",
+          "sell_channel#19",
+          "solution_begin_date#20",
+          "solution_end_date#21",
+          "is_solution_online#22",
+          "is_dp_online#23",
+          "is_mt_online#24",
+          "is_discnt#25",
+          "discnt#26",
+          "is_self_service#27",
+          "solution_management_type#28",
+          "bd_id#29",
+          "bd_name#30",
+          "bd_mis_name#31",
+          "bd_org_unit_id#32",
+          "bd_management#33",
+          "mt_contract_id#34",
+          "mt_contract_num#35",
+          "mt_coop_name#36",
+          "dp_contract_id#37",
+          "mt_org_id#38",
+          "mt_org_name#39",
+          "is_proxy#40",
+          "mt_city_id#41",
+          "mt_city_name#42",
+          "product_id#43",
+          "product_name#44",
+          "product_type#45",
+          "partyb_code#46",
+          "partyb_name#47",
+          "partner_id#48",
+          "partner_name#49",
+          "bu_code#50",
+          "bu_name#51",
+          "bg_code#52",
+          "bg_name#53",
+          "is_lq_coupon#54",
+          "is_return_coupon#55",
+          "product_kind#56",
+          "dp_brand_id#57",
+          "dp_brand_name#58",
+          "prime_vip_status#59",
+          "sub_category_id#60",
+          "partition_date#61"
+        ]
+      }
+    }
+  ]
 }
