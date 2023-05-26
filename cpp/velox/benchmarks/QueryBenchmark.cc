@@ -132,7 +132,7 @@ int main(int argc, char** argv) {
 //    auto fileName3 = lineitemOrcPath + "test_longdecimal.orc";
 //    ::benchmark::RegisterBenchmark(
 //        "select", BM, std::vector<std::string>{fileName3}, "test_longdecimal.json", "orc");
-    auto fileName4 = lineitemOrcPath + "rlev2.orc";
+    auto fileName4 = lineitemOrcPath + "rlev2_2.orc";
     ::benchmark::RegisterBenchmark(
         "select", BM, std::vector<std::string>{fileName4}, "test_rlev2.json", "orc");
 #endif
