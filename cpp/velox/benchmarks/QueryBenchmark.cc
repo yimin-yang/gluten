@@ -129,9 +129,12 @@ int main(int argc, char** argv) {
 //    auto fileName2 = lineitemOrcPath + "long_decimal_nonull.orc";
 //    ::benchmark::RegisterBenchmark(
 //        "select", BM, std::vector<std::string>{fileName2}, "select_long_decimal.json", "orc");
-    auto fileName3 = lineitemOrcPath + "test_longdecimal.orc";
+//    auto fileName3 = lineitemOrcPath + "test_longdecimal.orc";
+//    ::benchmark::RegisterBenchmark(
+//        "select", BM, std::vector<std::string>{fileName3}, "test_longdecimal.json", "orc");
+    auto fileName4 = lineitemOrcPath + "rlev2.orc";
     ::benchmark::RegisterBenchmark(
-        "select", BM, std::vector<std::string>{fileName3}, "test_longdecimal.json", "orc");
+        "select", BM, std::vector<std::string>{fileName4}, "test_rlev2.json", "orc");
 #endif
   } else {
     ::benchmark::RegisterBenchmark(
