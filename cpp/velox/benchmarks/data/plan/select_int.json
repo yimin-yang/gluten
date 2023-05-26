@@ -69,8 +69,7 @@
                 "dp_brand_id",
                 "dp_brand_name",
                 "prime_vip_status",
-                "sub_category_id",
-                "partition_date"
+                "sub_category_id"
               ],
               "struct": {
                 "types": [
@@ -378,17 +377,11 @@
                     "i64": {
                       "nullability": "NULLABILITY_NULLABLE"
                     }
-                  },
-                  {
-                    "string": {
-                      "nullability": "NULLABILITY_NULLABLE"
-                    }
                   }
                 ]
               },
               "partitionColumns": {
                 "columnType": [
-                  "NORMAL_COL",
                   "NORMAL_COL",
                   "NORMAL_COL",
                   "NORMAL_COL",
@@ -530,8 +523,7 @@
           "dp_brand_id#57",
           "dp_brand_name#58",
           "prime_vip_status#59",
-          "sub_category_id#60",
-          "partition_date#61"
+          "sub_category_id#60"
         ]
       }
     }
