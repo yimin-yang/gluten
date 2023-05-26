@@ -25,19 +25,23 @@
                 "poi_org_rank",
                 "poi_org_type",
                 "poi_management_type",
-                "solution_pk",
-                "solution_id",
+                "deal_pk",
+                "b_deal_id",
+                "c_deal_id",
+                "mt_deal_id",
+                "dp_deal_id",
                 "b_chain",
                 "sell_channel",
-                "solution_begin_date",
-                "solution_end_date",
-                "is_solution_online",
-                "is_dp_online",
+                "deal_begin_date",
+                "deal_end_date",
+                "is_deal_online",
                 "is_mt_online",
-                "is_discnt",
-                "discnt",
+                "is_dp_online",
+                "is_thirdparty",
+                "is_voucher",
+                "is_lott",
                 "is_self_service",
-                "solution_management_type",
+                "deal_management_type",
                 "bd_id",
                 "bd_name",
                 "bd_mis_name",
@@ -46,12 +50,22 @@
                 "mt_contract_id",
                 "mt_contract_num",
                 "mt_coop_name",
-                "dp_contract_id",
                 "mt_org_id",
                 "mt_org_name",
                 "is_proxy",
                 "mt_city_id",
                 "mt_city_name",
+                "dp_contract_id",
+                "mt_third_cate_id",
+                "mt_third_cate_name",
+                "mt_second_cate_id",
+                "mt_second_cate_name",
+                "mt_first_cate_id",
+                "mt_first_cate_name",
+                "dp_first_cate_id",
+                "dp_first_cate_name",
+                "dp_second_cate_id",
+                "dp_second_cate_name",
                 "product_id",
                 "product_name",
                 "product_type",
@@ -63,13 +77,13 @@
                 "bu_name",
                 "bg_code",
                 "bg_name",
-                "is_lq_coupon",
-                "is_return_coupon",
                 "product_kind",
+                "price",
+                "market_price",
+                "buy_price",
                 "dp_brand_id",
                 "dp_brand_name",
-                "prime_vip_status",
-                "sub_category_id"
+                "deal_is_display"
               ],
               "struct": {
                 "types": [
@@ -174,41 +188,6 @@
                     }
                   },
                   {
-                    "string": {
-                      "nullability": "NULLABILITY_NULLABLE"
-                    }
-                  },
-                  {
-                    "string": {
-                      "nullability": "NULLABILITY_NULLABLE"
-                    }
-                  },
-                  {
-                    "i64": {
-                      "nullability": "NULLABILITY_NULLABLE"
-                    }
-                  },
-                  {
-                    "i64": {
-                      "nullability": "NULLABILITY_NULLABLE"
-                    }
-                  },
-                  {
-                    "i64": {
-                      "nullability": "NULLABILITY_NULLABLE"
-                    }
-                  },
-                  {
-                    "i64": {
-                      "nullability": "NULLABILITY_NULLABLE"
-                    }
-                  },
-                  {
-                    "fp64": {
-                      "nullability": "NULLABILITY_NULLABLE"
-                    }
-                  },
-                  {
                     "i64": {
                       "nullability": "NULLABILITY_NULLABLE"
                     }
@@ -244,7 +223,37 @@
                     }
                   },
                   {
-                    "string": {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
                       "nullability": "NULLABILITY_NULLABLE"
                     }
                   },
@@ -274,12 +283,7 @@
                     }
                   },
                   {
-                    "i64": {
-                      "nullability": "NULLABILITY_NULLABLE"
-                    }
-                  },
-                  {
-                    "i64": {
+                    "string": {
                       "nullability": "NULLABILITY_NULLABLE"
                     }
                   },
@@ -319,6 +323,31 @@
                     }
                   },
                   {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "string": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "string": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
                     "string": {
                       "nullability": "NULLABILITY_NULLABLE"
                     }
@@ -349,7 +378,7 @@
                     }
                   },
                   {
-                    "i64": {
+                    "string": {
                       "nullability": "NULLABILITY_NULLABLE"
                     }
                   },
@@ -374,7 +403,68 @@
                     }
                   },
                   {
+                    "string": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
                     "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "string": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "string": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "decimal": {
+                      "scale": "4",
+                      "precision": "20",
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "decimal": {
+                      "scale": "4",
+                      "precision": "20",
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "decimal": {
+                      "scale": "4",
+                      "precision": "20",
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "string": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i32": {
                       "nullability": "NULLABILITY_NULLABLE"
                     }
                   }
@@ -382,6 +472,20 @@
               },
               "partitionColumns": {
                 "columnType": [
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
                   "NORMAL_COL",
                   "NORMAL_COL",
                   "NORMAL_COL",
@@ -479,51 +583,65 @@
           "poi_org_rank#13",
           "poi_org_type#14",
           "poi_management_type#15",
-          "solution_pk#16",
-          "solution_id#17",
-          "b_chain#18",
-          "sell_channel#19",
-          "solution_begin_date#20",
-          "solution_end_date#21",
-          "is_solution_online#22",
-          "is_dp_online#23",
-          "is_mt_online#24",
-          "is_discnt#25",
-          "discnt#26",
-          "is_self_service#27",
-          "solution_management_type#28",
-          "bd_id#29",
-          "bd_name#30",
-          "bd_mis_name#31",
-          "bd_org_unit_id#32",
-          "bd_management#33",
-          "mt_contract_id#34",
-          "mt_contract_num#35",
-          "mt_coop_name#36",
-          "dp_contract_id#37",
-          "mt_org_id#38",
-          "mt_org_name#39",
-          "is_proxy#40",
-          "mt_city_id#41",
-          "mt_city_name#42",
-          "product_id#43",
-          "product_name#44",
-          "product_type#45",
-          "partyb_code#46",
-          "partyb_name#47",
-          "partner_id#48",
-          "partner_name#49",
-          "bu_code#50",
-          "bu_name#51",
-          "bg_code#52",
-          "bg_name#53",
-          "is_lq_coupon#54",
-          "is_return_coupon#55",
-          "product_kind#56",
-          "dp_brand_id#57",
-          "dp_brand_name#58",
-          "prime_vip_status#59",
-          "sub_category_id#60"
+          "deal_pk#16",
+          "b_deal_id#17",
+          "c_deal_id#18",
+          "mt_deal_id#19",
+          "dp_deal_id#20",
+          "b_chain#21",
+          "sell_channel#22",
+          "deal_begin_date#23",
+          "deal_end_date#24",
+          "is_deal_online#25",
+          "is_mt_online#26",
+          "is_dp_online#27",
+          "is_thirdparty#28",
+          "is_voucher#29",
+          "is_lott#30",
+          "is_self_service#31",
+          "deal_management_type#32",
+          "bd_id#33",
+          "bd_name#34",
+          "bd_mis_name#35",
+          "bd_org_unit_id#36",
+          "bd_management#37",
+          "mt_contract_id#38",
+          "mt_contract_num#39",
+          "mt_coop_name#40",
+          "mt_org_id#41",
+          "mt_org_name#42",
+          "is_proxy#43",
+          "mt_city_id#44",
+          "mt_city_name#45",
+          "dp_contract_id#46",
+          "mt_third_cate_id#47",
+          "mt_third_cate_name#48",
+          "mt_second_cate_id#49",
+          "mt_second_cate_name#50",
+          "mt_first_cate_id#51",
+          "mt_first_cate_name#52",
+          "dp_first_cate_id#53",
+          "dp_first_cate_name#54",
+          "dp_second_cate_id#55",
+          "dp_second_cate_name#56",
+          "product_id#57",
+          "product_name#58",
+          "product_type#59",
+          "partyb_code#60",
+          "partyb_name#61",
+          "partner_id#62",
+          "partner_name#63",
+          "bu_code#64",
+          "bu_name#65",
+          "bg_code#66",
+          "bg_name#67",
+          "product_kind#68",
+          "price#69",
+          "market_price#70",
+          "buy_price#71",
+          "dp_brand_id#72",
+          "dp_brand_name#73",
+          "deal_is_display#74"
         ]
       }
     }
