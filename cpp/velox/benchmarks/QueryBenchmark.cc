@@ -123,9 +123,9 @@ int main(int argc, char** argv) {
 #if orc_reader_decimal == 0
     ::benchmark::RegisterBenchmark("select", BM, std::vector<std::string>{lineitemOrcPath}, "select.json", "orc");
 #else
-    auto fileName1 = lineitemOrcPath + "integer.orc";
+    auto fileName1 = lineitemOrcPath + "string.orc";
     ::benchmark::RegisterBenchmark(
-        "select", BM, std::vector<std::string>{fileName1}, "select_int.json", "orc");
+        "select", BM, std::vector<std::string>{fileName1}, "select_string.json", "orc");
 //    auto fileName2 = lineitemOrcPath + "long_decimal_nonull.orc";
 //    ::benchmark::RegisterBenchmark(
 //        "select", BM, std::vector<std::string>{fileName2}, "select_long_decimal.json", "orc");
