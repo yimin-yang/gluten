@@ -1,0 +1,219 @@
+{
+  "relations": [
+    {
+      "root": {
+        "input": {
+          "read": {
+            "common": {
+              "direct": {}
+            },
+            "baseSchema": {
+              "names": [
+                "mt_city_id",
+                "bu_code",
+                "bu_name",
+                "intent_uv",
+                "trade_order_cnt",
+                "gtv",
+                "order_conver_rate",
+                "per_order_amt",
+                "cpc_online_poi_cnt",
+                "cpc_new_poi_cnt",
+                "cpc_keep_poi_cnt",
+                "cpc_effect_view",
+                "cpc_calculate_click",
+                "cpc_charge_amt",
+                "cpc_available_budget",
+                "cpc_click_pass_rate",
+                "cpc_click_price",
+                "cpc_budget_charge_rate",
+                "cpc_crash_poi_cnt",
+                "data_ts"
+              ],
+              "struct": {
+                "types": [
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "string": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "string": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "decimal": {
+                      "scale": "4",
+                      "precision": "20",
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "decimal": {
+                      "scale": "4",
+                      "precision": "20",
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "decimal": {
+                      "scale": "4",
+                      "precision": "20",
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i32": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i32": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i32": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "decimal": {
+                      "scale": "4",
+                      "precision": "20",
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "decimal": {
+                      "scale": "4",
+                      "precision": "20",
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "decimal": {
+                      "scale": "4",
+                      "precision": "20",
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "decimal": {
+                      "scale": "4",
+                      "precision": "20",
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "decimal": {
+                      "scale": "4",
+                      "precision": "20",
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "i32": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  {
+                    "string": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  }
+                ]
+              },
+              "partitionColumns": {
+                "columnType": [
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL",
+                  "NORMAL_COL"
+                ]
+              }
+            },
+            "localFiles": {
+              "items": [
+                {
+                  "uriFile": "file:///mnt/DP_disk1/tpch_date_10/lineitem/part-00003-384769b0-b9d4-4ee6-a4a8-89bc01661f71-c000.snappy.parquet",
+                  "length": "12212684",
+                  "parquet": {}
+                },
+                {
+                  "uriFile": "file:///mnt/DP_disk1/tpch_date_10/lineitem/part-00199-384769b0-b9d4-4ee6-a4a8-89bc01661f71-c000.snappy.parquet",
+                  "length": "12211615",
+                  "parquet": {}
+                }
+              ]
+            }
+          }
+        },
+        "names": [
+          "mt_city_id#0",
+          "bu_code#1",
+          "bu_name#2",
+          "intent_uv#3",
+          "trade_order_cnt#4",
+          "gtv#5",
+          "order_conver_rate#6",
+          "per_order_amt#7",
+          "cpc_online_poi_cnt#8",
+          "cpc_new_poi_cnt#9",
+          "cpc_keep_poi_cnt#10",
+          "cpc_effect_view#11",
+          "cpc_calculate_click#12",
+          "cpc_charge_amt#13",
+          "cpc_available_budget#14",
+          "cpc_click_pass_rate#15",
+          "cpc_click_price#16",
+          "cpc_budget_charge_rate#17",
+          "cpc_crash_poi_cnt#18",
+          "data_ts#19"
+        ]
+      }
+    }
+  ]
+}
